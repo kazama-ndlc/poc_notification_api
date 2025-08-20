@@ -62,3 +62,4 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
     status: 'success',
     message: 'Data received successfully'
   });
+});
