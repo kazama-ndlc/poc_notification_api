@@ -58,7 +58,7 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
     "ClientRefId": clientRefId
   } = req.body;
   
-  return res.status(401).json({
+  return res.status(200).json({
     status: 'success',
     message: 'Data received successfully'
   });
