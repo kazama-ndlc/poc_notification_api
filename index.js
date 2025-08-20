@@ -35,3 +35,30 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+function verifyAccessToken(req, res, next) {
+  const token = req.headers['Authorization'];
+  if (!token || token !== FIXED_TOKEN) {
+    return res.status(401).json({
+      status: 'error',
+      message: 'Invalid or missing token'
+    });
+  }
+  next();
+}
+
+app.post('/status/receive', verifyAccessToken, (req, res) => {
+  const {
+    "lc-num": lcNum,
+    "modified-by": modifiedBy,
+    "modified-date": modifiedDate,
+    "txn-id": txnId,
+    "txn-status": txnStatus,
+    "txn-type": txnType,
+    "ClientRefId": clientRefId,
+  } = req.body;
+  
+  return res.status(401).json({
+    status: 'success',
+    message: 'Data received successfully'
+  });
