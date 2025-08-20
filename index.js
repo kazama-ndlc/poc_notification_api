@@ -55,7 +55,7 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
     "txn-id": txnId,
     "txn-status": txnStatus,
     "txn-type": txnType,
-    "ClientRefId": clientRefId,
+    "ClientRefId": clientRefId
   } = req.body;
   
   return res.status(401).json({
