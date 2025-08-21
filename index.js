@@ -58,6 +58,10 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
     "ClientRefId": clientRefId
   } = req.body;
   
+  console.log('Received request at: ', new Date());
+  console.log('Request header: ', req.headers);
+  console.log('Request body: ', req.body);
+  
   return res.status(200).json({
     status: 'success',
     message: 'Data received successfully'
