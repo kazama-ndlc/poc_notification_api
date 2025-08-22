@@ -1,4 +1,6 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const app = express();
 app.use(express.json());
 
@@ -57,6 +59,30 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
     "txn-type": txnType,
     "ClientRefId": clientRefId
   } = req.body;
+  
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const logFileName = `request-${timestamp}.log`;
+  const logFilePath = path.join(__dirname, 'logs', logFileName);
+  
+  const logContent = [
+    `Received request at: ${new Date().toISOString()}`,
+    `Request headers: ${JSON.stringify(req.headers, null, 2)}`,
+    `Request body: ${JSON.stringify(req.body, null, 2)}`
+  ].join('\n\n');
+  
+  fs.mkdir(path.join(__dirname, 'logs'), { recursive: true }, (err) => {
+    if (err) {
+      console.error('ログディレクトリの作成に失敗: ', err);
+    }
+    
+    fs.writeFile(logFilePath, logContent, (err) => {
+      if (err) {
+        console.error('ログファイルの書き込みに失敗: ', err);
+      }
+      
+      console.log('ログをファイルに保存しました: ', logFileName);
+    });
+  });
   
   console.log('Received request at: ', new Date());
   console.log('Request header: ', req.headers);
