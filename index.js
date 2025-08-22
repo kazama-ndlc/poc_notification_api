@@ -99,7 +99,7 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
 
 app.get('/download-log/:filename', (req, res) => {
   const filename = req.params.filename;
-  const filePath = path.join(__dirname, 'logs', fileName);
+  const filePath = path.join(__dirname, 'logs', filename);
   
   fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
