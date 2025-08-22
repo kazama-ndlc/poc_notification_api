@@ -60,7 +60,9 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
     "ClientRefId": clientRefId
   } = req.body;
   
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const now = new Date();
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const timestamp = jst.toISOString().replace(/[:.]/g, '-').replace('T', '_').replace('Z', '');
   const logFileName = `request-${timestamp}.log`;
   const logFilePath = path.join(__dirname, 'logs', logFileName);
   
@@ -81,6 +83,7 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
       }
       
       console.log('ログをファイルに保存しました: ', logFileName);
+      console.log('ログファイル保存先: ', logFilePath);
     });
   });
   
