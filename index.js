@@ -83,7 +83,7 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
       }
       
       console.log('ログをファイルに保存しました: ', logFileName);
-      console.log('ログファイル保存先: ', logFilePath);
+      console.log(`ダウンロードURL: https://poc-notification-api.onrender.com/download-log/${logFileName}`);
     });
   });
   
@@ -94,6 +94,18 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
   return res.status(200).json({
     status: 'success',
     message: 'Data received successfully'
+  });
+});
+
+app.get('/download-log/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, 'logs', fileName);
+  
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send('ファイルが見つかりません');
+    }
+    res.download(filePath);
   });
 });
 
