@@ -67,7 +67,7 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
   const logFilePath = path.join(__dirname, 'logs', logFileName);
   
   const logContent = [
-    `Received request at: ${new Date().toISOString()}`,
+    `Received request at: ${timestamp}`,
     `Request headers: ${JSON.stringify(req.headers, null, 2)}`,
     `Request body: ${JSON.stringify(req.body, null, 2)}`
   ].join('\n\n');
