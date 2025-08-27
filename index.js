@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const archiver = require('archiver');
 const app = express();
 app.use(express.json());
 
@@ -83,7 +84,8 @@ app.post('/status/receive', verifyAccessToken, (req, res) => {
       }
       
       console.log('ログをファイルに保存しました: ', logFileName);
-      console.log(`ダウンロードURL: https://poc-notification-api.onrender.com/download-log/${logFileName}`);
+      console.log(`対象ログダウンロードURL: https://poc-notification-api.onrender.com/download-log/${logFileName}`);
+      console.log(`全ログ一括ダウンロードURL: https://poc-notification-api.onrender.com/download-all-logs`);
     });
   });
   
@@ -107,6 +109,22 @@ app.get('/download-log/:filename', (req, res) => {
     }
     res.download(filePath);
   });
+});
+
+app.get('/download-all-logs', (req, res) => {
+  const archive = archiver('zip', { zlib: { level: 9 } });
+  const logsDir = path.join(__dirname, 'logs');
+  
+  res.attachment('all-logs.zip');
+  
+  archive.on('error', (err) => {
+    console.error('ZIP作成エラー: ', err);
+    res.status(500).send('ZIP作成に失敗しました');
+  });
+  
+  archive.pipe(res);
+  archive.directory(logsDir, false);
+  archive.finalize()
 });
 
 app.get('/', (req, res) => {
