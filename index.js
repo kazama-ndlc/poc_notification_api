@@ -15,7 +15,7 @@ app.post('/auth/token', (req, res) => {
   const { client_id, client_secret } = req.body;
   
   if (!client_id || !client_secret) {
-    console.log('client_idまたはclient_secretが未設定です。', client_id, client_secret);
+    console.log('client_idまたはclient_secretが未設定です。client_id: ', client_id, 'client_secret: ', client_secret);
     return res.status(400).json({
       status: 'error',
       message: 'Missing required fields'
@@ -29,7 +29,7 @@ app.post('/auth/token', (req, res) => {
       status: 'success'
     });
   } else {
-    console.log('client_idまたはclient_secretの値が誤っています。', client_id, client_secret);
+    console.log('client_idまたはclient_secretの値が誤っています。client_id: ', client_id, 'client_secret: ', client_secret);
     return res.status(401).json({
       status: 'error',
       message: 'Invalid credentials'
