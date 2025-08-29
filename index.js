@@ -11,9 +11,11 @@ const FIXED_TOKEN = 'usf7nWhZeLySGKxXnS-cUuxcC_QSAuY2akfnxbL_5SVBWLWkNS9FsPDJemJ
 const EXPIRES_IN_SECOND = 99999;
 
 app.post('/auth/token', (req, res) => {
+  console.log('トークン取得リクエストを受信しました。');
   const { client_id, client_secret } = req.body;
   
   if (!client_id || !client_secret) {
+    console.log('client_idまたはclient_secretが未設定です。', client_id, client_secret);
     return res.status(400).json({
       status: 'error',
       message: 'Missing required fields'
@@ -27,6 +29,7 @@ app.post('/auth/token', (req, res) => {
       status: 'success'
     });
   } else {
+    console.log('client_idまたはclient_secretの値が誤っています。', client_id, client_secret);
     return res.status(401).json({
       status: 'error',
       message: 'Invalid credentials'
@@ -40,6 +43,7 @@ app.listen(PORT, () => {
 });
 
 function verifyAccessToken(req, res, next) {
+  console.log('TS通知を受信しました。');
   const token = req.headers['authorization'];
   if (!token || token !== FIXED_TOKEN) {
     console.log('TS通知を受信しましたが認証に失敗しました。トークン: ', token);
@@ -52,6 +56,7 @@ function verifyAccessToken(req, res, next) {
 }
 
 app.post('/status/receive', verifyAccessToken, (req, res) => {
+  console.log('TS通知のトークン認証に成功しました。');
   const {
     "lc-num": lcNum,
     "modified-by": modifiedBy,
