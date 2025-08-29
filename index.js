@@ -42,6 +42,7 @@ app.listen(PORT, () => {
 function verifyAccessToken(req, res, next) {
   const token = req.headers['authorization'];
   if (!token || token !== FIXED_TOKEN) {
+    console.log('TS通知を受信しましたが認証に失敗しました。トークン: ', token);
     return res.status(401).json({
       status: 'error',
       message: 'Invalid or missing token'
